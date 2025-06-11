@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Container, Alert } from "react-bootstrap";
-
+import axios from "axios"
 const Contact = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [comment, setComment] = useState("");
+  const [newContact, setNewContact] = useState({
+    firstName : '',
+    lastName : '',
+    email : "",
+    comment : ""
+  });
+
   const [sms, setSms] = useState("");
   const [alertVariant, setAlertVariant] = useState("success");
   const [showAlert, setShowAlert] = useState(false);
+
+const hanleChange = (e) => {
+  setNewContact ({...newContact, [e.target.name]:e.target.value})
+}
   const hanleSubmit = (e) => {
     e.preventDefault();
     if (firstName === "" || lastName === "" || email === "" || comment === "") {
@@ -31,28 +38,25 @@ const Contact = () => {
     return () => clearTimeout(timer);
   }, [showAlert]);
   // Shembull fillestar per useEffect
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    setCount(count + 1);
-  }, [showAlert]);
   return (
     <Container>
-      <p>{count}</p>
       <Form onSubmit={hanleSubmit}>
         <Form.Group className="mb-3" controlId="firstName">
           <Form.Label>First Name</Form.Label>
           <Form.Control
             type="text"
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            name = "firstName"
+            onChange={hanleChange}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="lastName">
           <Form.Label>Last Name</Form.Label>
           <Form.Control
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={newContact}
+            name= "lastName"
+            onChange={hanleChange}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="email">
@@ -60,7 +64,8 @@ const Contact = () => {
           <Form.Control
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name ="email"
+            onChange={hanleChange}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="comment">
@@ -69,7 +74,8 @@ const Contact = () => {
             as="textarea"
             rows={3}
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            name = "comment"
+            onChange={hanleChange}
           />
         </Form.Group>
         <Button type="submit" variant="primary">
